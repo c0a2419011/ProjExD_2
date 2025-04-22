@@ -28,10 +28,10 @@ def check_bound(rct:pg.Rect) -> tuple[bool,bool]:
     return (yoko,tate)
 def gameover(screen: pg.Surface) -> None:
     black_img= pg.Surface((1100, 650))#黒い画面
-    pg.draw.rect(black_img,(0,0,0),pg.Rect(0,0,1100,650))
+    pg.draw.rect(black_img,(0,0,0),pg.Rect(0,0,WIDTH,HEIGHT))
     kk_img2 = pg.image.load("fig/8.png")#泣いてるこうかとん
     fonto = pg.font.Font(None, 40)
-    txt = fonto.render("Gameover", True, (255, 255, 255))#gameoverの文字
+    txt = fonto.render("Game Over", True, (255, 255, 255))#gameoverの文字
     black_img.set_alpha(200)#半透明
     screen.blit(black_img,[0,0])
     screen.blit(txt,[550,325])
@@ -39,7 +39,20 @@ def gameover(screen: pg.Surface) -> None:
     screen.blit(kk_img2,[700,325])
     pg.display.update()
     time.sleep(5)
-   
+    
+    
+def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+    
+    bmb_lst=[]
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        bb_img.set_colorkey((0,0,0))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        bmb_lst.append(bb_img)
+    bb_accs = [a for a in range(1, 11)]
+    return bmb_lst,bb_accs
+# def get_kk_img(sum_mv: tuple[int, int]) -> pg.Surface:
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -48,7 +61,8 @@ def main():
     pg.draw.circle(bb_img, (255, 0, 0), (10, 10), 10)
     bb_img.set_colorkey((0, 0, 0))
   
-    
+    bb_imgs, bb_accs = init_bb_imgs()
+    bb_img = bb_imgs[0]
     bb_rct = bb_img.get_rect()
     bb_rct.center = random.randint(0,WIDTH),random.randint(0,HEIGHT)
     #爆弾初期化
@@ -93,7 +107,12 @@ def main():
         if check_bound(kk_rct) != (True,True):#画面の外だったら
             kk_rct.move_ip(-sum_mv[0],-sum_mv[1])#画面内に戻す
         screen.blit(kk_img, kk_rct)
-        bb_rct.move_ip(vx,vy)#爆弾の移動
+        bb_img = bb_imgs[min(tmr//500, 9)]
+        avx = vx*bb_accs[min(tmr//500, 9)]
+        avy = vy*bb_accs[min(tmr//500, 9)]
+        
+        
+        bb_rct.move_ip(avx,avy)#爆弾の移動
         yoko,tate = check_bound(bb_rct)
         if not yoko:#左右どちらかにはみ出ていたら
             vx *= -1
