@@ -27,16 +27,16 @@ def check_bound(rct:pg.Rect) -> tuple[bool,bool]:
         tate =False
     return (yoko,tate)
 def gameover(screen: pg.Surface) -> None:
-    black_img= pg.Surface((1100, 650))
+    black_img= pg.Surface((1100, 650))#黒い画面
     pg.draw.rect(black_img,(0,0,0),pg.Rect(0,0,1100,650))
-    kk_img2 = pg.image.load("fig/8.png")
+    kk_img2 = pg.image.load("fig/8.png")#泣いてるこうかとん
     fonto = pg.font.Font(None, 40)
-    txt = fonto.render("Gameover", True, (255, 255, 255))
-    black_img.set_alpha(200)
+    txt = fonto.render("Gameover", True, (255, 255, 255))#gameoverの文字
+    black_img.set_alpha(200)#半透明
     screen.blit(black_img,[0,0])
     screen.blit(txt,[550,325])
-    # screen.blit(kk_img2,[500,325])
-    # screen.blit(kk_img2,[700,325])
+    screen.blit(kk_img2,[500,325])
+    screen.blit(kk_img2,[700,325])
     pg.display.update()
     time.sleep(5)
    
