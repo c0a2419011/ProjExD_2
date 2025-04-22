@@ -26,6 +26,8 @@ def check_bound(rct:pg.Rect) -> tuple[bool,bool]:
     if rct.top < 0 or HEIGHT < rct.bottom:#画面内だったら
         tate =False
     return (yoko,tate)
+
+
 def gameover(screen: pg.Surface) -> None:#ゲームオーバー画面
     black_img= pg.Surface((1100, 650))#黒い画面
     pg.draw.rect(black_img,(0,0,0),pg.Rect(0,0,WIDTH,HEIGHT))
@@ -41,8 +43,7 @@ def gameover(screen: pg.Surface) -> None:#ゲームオーバー画面
     time.sleep(5)
     
     
-def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:#時間とともに爆弾が拡大，加速する
-    
+def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
     bmb_lst=[]
     for r in range(1, 11):
         bb_img = pg.Surface((20*r, 20*r))
@@ -50,7 +51,7 @@ def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:#時間とともに爆�
         pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
         bmb_lst.append(bb_img)#大きくなる爆弾
     bb_accs = [a for a in range(1, 11)]#速度リスト
-    return bmb_lst,bb_accs #爆弾が入っているリストと速度リスト
+    return bmb_lst,bb_accs 
 # def get_kk_img(sum_mv: tuple[int, int]) -> pg.Surface:
 
 def main():
