@@ -44,6 +44,11 @@ def gameover(screen: pg.Surface) -> None:#ゲームオーバー画面
     
     
 def init_bb_imgs() -> tuple[list[pg.Surface], list[int]]:
+    """
+    時間とともに爆弾が拡大，加速する関数
+    戻り値 速度のリスト、大きい爆弾
+    引数なし
+    """
     bmb_lst=[]
     for r in range(1, 11):
         bb_img = pg.Surface((20*r, 20*r))
