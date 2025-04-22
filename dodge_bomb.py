@@ -2,7 +2,7 @@ import os
 import random
 import sys
 import pygame as pg
-
+import time
 
 WIDTH, HEIGHT = 1100, 650
 DELTA={
@@ -26,8 +26,20 @@ def check_bound(rct:pg.Rect) -> tuple[bool,bool]:
     if rct.top < 0 or HEIGHT < rct.bottom:#画面内だったら
         tate =False
     return (yoko,tate)
-    
-        
+def gameover(screen: pg.Surface) -> None:
+    black_img= pg.Surface((1100, 650))
+    pg.draw.rect(black_img,(0,0,0),pg.Rect(0,0,1100,650))
+    kk_img2 = pg.image.load("fig/8.png")
+    fonto = pg.font.Font(None, 40)
+    txt = fonto.render("Gameover", True, (255, 255, 255))
+    black_img.set_alpha(200)
+    screen.blit(black_img,[0,0])
+    screen.blit(txt,[550,325])
+    # screen.blit(kk_img2,[500,325])
+    # screen.blit(kk_img2,[700,325])
+    pg.display.update()
+    time.sleep(5)
+   
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -35,6 +47,7 @@ def main():
     bb_img = pg.Surface((20, 20))
     pg.draw.circle(bb_img, (255, 0, 0), (10, 10), 10)
     bb_img.set_colorkey((0, 0, 0))
+  
     
     bb_rct = bb_img.get_rect()
     bb_rct.center = random.randint(0,WIDTH),random.randint(0,HEIGHT)
@@ -45,14 +58,23 @@ def main():
     clock = pg.time.Clock()
     tmr = 0
     vx,vy=+5,+5
+    
+      
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
         screen.blit(bg_img, [0, 0]) 
-        if kk_rct.colliderect(bb_rct): #こうかとんと爆弾が重なっていたら
+        # screen.blit(kk_img2,)
+        if kk_rct.colliderect(bb_rct):
+            gameover(screen)
+            # time.sleep(5)
             
             return
+        # if kk_rct.colliderect(bb_rct): #こうかとんと爆弾が重なっていたら
+        #     screen.blit(black_img,[0,0])
+        #     time.sleep(5)
+        #     return
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]#合計移動量リスト 
         for key,mv in DELTA.items():
